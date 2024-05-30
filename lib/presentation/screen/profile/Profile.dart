@@ -168,7 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           },
                         ),
                         GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: itemsPerRow,

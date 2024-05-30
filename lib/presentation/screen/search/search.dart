@@ -98,7 +98,7 @@ class _SearchPageState extends State<SearchPage> {
             floating: true,
             snap: false,
             title: SizedBox(
-              height: height * 0.06,
+              height: height * 0.057,
               child: SearchBar(
                 backgroundColor: const MaterialStatePropertyAll(Colors.white24),
                 shape: MaterialStatePropertyAll(
@@ -115,9 +115,9 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: GridView.custom(
-              padding: const EdgeInsets.all(8.0),
+          SliverPadding(
+            padding: const EdgeInsets.all(8.0),
+            sliver: SliverGrid(
               gridDelegate: SliverQuiltedGridDelegate(
                 crossAxisCount: 4,
                 mainAxisSpacing: 4,
@@ -130,7 +130,7 @@ class _SearchPageState extends State<SearchPage> {
                   const QuiltedGridTile(1, 2),
                 ],
               ),
-              childrenDelegate: SliverChildBuilderDelegate(
+              delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return Container(
                     color: Colors.grey[800],
