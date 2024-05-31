@@ -18,35 +18,35 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   bool checkUser = false;
   bool isLoading = false;
-  // checkUserData() async {
-  //   SharedPreferences sharedUser = await SharedPreferences.getInstance();
-  //   var userDataString = sharedUser.getString('user');
-  //   var userString = sharedUser.getString('authToken');
-  //
-  //   print("userDataString :::::::: $userDataString");
-  //   print("userString :::::::: $userString");
-  //   if (userDataString != null) {
-  //     checkUser = true;
-  //     final appProvider = Provider.of<AppProvider>(context, listen: false);
-  //     // appProvider.updateUser(userFromJson(userDataString));
-  //     // appProvider.updateUser(UserModel(token: userDataString));
-  //   } else {
-  //     checkUser = false;
-  //   }
-  // }
+  checkUserData() async {
+    SharedPreferences sharedUser = await SharedPreferences.getInstance();
+    var userDataString = sharedUser.getString('user');
+    var userString = sharedUser.getString('authToken');
+
+    print("userDataString :::::::: $userDataString");
+    print("userString :::::::: $userString");
+    if (userDataString != null) {
+      checkUser = true;
+      final appProvider = Provider.of<AppProvider>(context, listen: false);
+      // appProvider.updateUser(userFromJson(userDataString));
+      // appProvider.updateUser(UserModel(token: userDataString));
+    } else {
+      checkUser = false;
+    }
+  }
 
   void navigate() {
-    // checkUserData();
-    // Future.delayed(Duration(milliseconds: 100), () {
-    //   setState(() {
-    //     isLoading = true;
-    //   });
-    //   if (checkUser) {
-    //     Navigator.of(context).pushReplacementNamed('/home');
-    //   } else {
-    //     widget.updateWidget(1, UserArguments(newUser: true));
-    //   }
-    // });
+    checkUserData();
+    Future.delayed(Duration(milliseconds: 100), () {
+      setState(() {
+        isLoading = true;
+      });
+      if (checkUser) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        widget.updateWidget(1, UserArguments(newUser: true));
+      }
+    });
     Future.delayed(Duration(milliseconds: 1500), () {
       Navigator.of(context).pushReplacementNamed('/customBottonNaviBar');
     });

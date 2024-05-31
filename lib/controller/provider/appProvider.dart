@@ -4,14 +4,15 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/authModel.dart';
+
 class AppProvider extends ChangeNotifier {
-  // UserModel? userModel;
-  // // late Account account;
-  //
-  // void updateUser(UserModel user) {
-  //   userModel = user;
-  //   notifyListeners();
-  // }
+  UserModel? userModel;
+
+  void updateUser(UserModel user) {
+    userModel = user;
+    notifyListeners();
+  }
 
   // void updateAccount(Account data) {
   //   account = data;
@@ -47,10 +48,10 @@ class AppProvider extends ChangeNotifier {
   //     return null;
   //   }
   // }
-
-  void clearState() {
-    // user = null;
-    // account = null;
-    // userWallet = null;
-  }
+  //
+  // void clearState() {
+  //   user = null;
+  //   account = null;
+  //   userWallet = null;
+  // }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           SizedBox(height: height * 0.01),
                           inputField(
-                              title: 'Mobile number',
-                              icon: Icons.phone_iphone,
+                              title: 'username or email address',
                               keyboardType: TextInputType.phone,
                               maxLength: 10,
                               inputFormatters: [
@@ -98,7 +98,21 @@ class _LoginPageState extends State<LoginPage> {
                               inputFormatters: [
                                 FilteringTextInputFormatter.singleLineFormatter
                               ]),
-                          SizedBox(height: height * 0.042),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Text(
+                                "Forget password?",
+                                style: GoogleFonts.robotoCondensed(
+                                  color: HexColor("#1471af"),
+                                  fontSize: height * 0.019,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: height * 0.02),
                           Align(
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
@@ -112,40 +126,24 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               },
                               child: Container(
+                                  width: double.infinity,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.056,
                                   padding: EdgeInsets.only(
                                       top: height * 0.013,
                                       bottom: height * 0.013,
                                       right: width * 0.05,
                                       left: width * 0.05),
                                   decoration: BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                        HexColor("#c94f0e").withOpacity(0.7),
-                                        HexColor("#b52d4b").withOpacity(0.7)
-                                      ]),
-                                      // color: HexColor("#c94f0e"),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(40))
-                                      // borderRadius: BorderRadius.only(
-                                      //     topRight: Radius.circular(40),
-                                      //     bottomRight: Radius.circular(40))
-                                      ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("Login",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: height * 0.0215)),
-                                      SizedBox(width: width * 0.02),
-                                      Icon(
-                                        Icons.arrow_forward_ios_rounded,
-                                        color: Colors.white,
-                                        size: height * 0.018,
-                                      ),
-                                    ],
+                                      color: HexColor("#0397fe"),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(3))),
+                                  child: Center(
+                                    child: Text("Log In",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: height * 0.0215)),
                                   )),
                             ),
                           ),
@@ -153,37 +151,26 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 )),
           ),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              "Forget your password?",
-              style: GoogleFonts.robotoCondensed(
-                color: Colors.white,
-                fontSize: height * 0.019,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
           SizedBox(height: height * 0.15),
           Row(
             children: [
-              // Expanded(
-              //     child: CustomDivider(
-              //         thickness: 2,
-              //         indentWidth: height * 0.04,
-              //         endIndentWidth: height * 0.01)),
+              Expanded(
+                  child: Divider(
+                      thickness: 2,
+                      indent: height * 0.04,
+                      endIndent: height * 0.015)),
               Text(
-                "or connect with",
+                "or",
                 style: GoogleFonts.robotoCondensed(
-                  color: Colors.black54,
-                  fontSize: height * 0.017,
+                  color: HexColor("#1471af"),
+                  fontSize: height * 0.0185,
                 ),
               ),
-              // Expanded(
-              //     child: CustomDivider(
-              //         thickness: 2,
-              //         indentWidth: height * 0.01,
-              //         endIndentWidth: height * 0.04))
+              Expanded(
+                  child: Divider(
+                      thickness: 2,
+                      indent: height * 0.015,
+                      endIndent: height * 0.04))
             ],
           ),
           SizedBox(height: height * 0.015),
@@ -208,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
               //     }),
             ],
           ),
-          SizedBox(height: height * 0.01),
+          // SizedBox(height: height * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -243,8 +230,7 @@ class _LoginPageState extends State<LoginPage> {
   login() {
     print("email: $emailId, password: $password");
     AuthenticationRepository()
-        .login({"mobile": "$emailId", "password": "$password"}).then((value) {
-      // value != "" ? _btnController.success() : _btnController.error();
+        .login({"email": "$emailId", "password": "$password"}).then((value) {
       print(" value[values] :: ${value}");
       saveData(value);
       Navigator.pushReplacementNamed(context, "/home");
@@ -253,11 +239,11 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  saveData(UserModel authtoken) async {
+  saveData(UserModel authToken) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
-    sharedUser.setString('user', jsonEncode(authtoken));
-    sharedUser.setString('authToken', 'Bearer ${authtoken.token}');
-    // Provider.of<AppProvider>(context, listen: false).updateUser(authtoken);
+    sharedUser.setString('user', jsonEncode(authToken));
+    sharedUser.setString('authToken', 'Bearer ${authToken.token}');
+    Provider.of<AppProvider>(context, listen: false).updateUser(authToken);
   }
 
   Widget inputField(
@@ -267,28 +253,23 @@ class _LoginPageState extends State<LoginPage> {
       int? maxLength,
       inputFormatters}) {
     return Container(
-      height: 50,
+      height: MediaQuery.of(context).size.height * 0.056,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(25)),
+          color: HexColor("#363636"), borderRadius: BorderRadius.circular(3)),
+      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
       child: TextFormField(
         decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.05,
-                left: MediaQuery.of(context).size.width * 0.05),
-            child: Icon(
-              icon,
-              color: Colors.black38,
-            ),
-          ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(35)),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
               color: Colors.red,
             ),
           ),
+          hintTextDirection: TextDirection.ltr,
           hintText: title,
-          hintStyle: TextStyle(color: Colors.black38),
+          hintStyle: TextStyle(
+              color: Colors.white54,
+              fontSize: MediaQuery.of(context).size.height * 0.021),
           counterText: '',
           border: InputBorder.none,
         ),
@@ -339,81 +320,6 @@ class _LoginPageState extends State<LoginPage> {
             password = value!;
           }
         },
-      ),
-    );
-  }
-
-  Widget mobileField(double height, double width, hintText, icon,
-      inputFormatters, validator, onSaved, keyboardType) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: width * 0.07,
-        right: width * 0.07,
-        bottom: height * 0.03,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(35)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              spreadRadius: 2,
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: SizedBox(
-          width: width * 0.85,
-          child: TextFormField(
-            onTapOutside: (event) =>
-                FocusManager.instance.primaryFocus?.unfocus(),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              errorStyle: TextStyle(color: Colors.white),
-              errorMaxLines: 1,
-              enabledBorder: commonInputBorder,
-              disabledBorder: commonInputBorder,
-              focusedBorder: commonInputBorder,
-              focusedErrorBorder: commonInputBorder,
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(35)),
-                borderSide: BorderSide(
-                  color: Colors.red,
-                ),
-              ),
-              prefixIcon: Padding(
-                padding: EdgeInsets.only(
-                  left: width * 0.09,
-                  right: width * 0.05,
-                ),
-                child: Icon(
-                  icon,
-                  color: Colors.black26,
-                  size: height * 0.028,
-                ),
-              ),
-              hintText: hintText,
-              hintStyle: TextStyle(
-                color: Colors.black26,
-                fontSize: height * 0.02,
-              ),
-              counterText: '',
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-            ),
-            style: TextStyle(
-              color: Colors.black38,
-              fontWeight: FontWeight.w500,
-              fontSize: height * 0.022,
-            ),
-            cursorColor: Colors.black,
-            keyboardType: keyboardType,
-            inputFormatters: inputFormatters,
-            validator: validator,
-            onSaved: onSaved,
-          ),
-        ),
       ),
     );
   }
